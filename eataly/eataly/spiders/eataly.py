@@ -1,17 +1,12 @@
-# from scrapy import Spider
-# from budget.items import BudgetItem
-
 from scrapy import Spider, Request
 from eataly.items import EatalyItem
 
 class eataly(Spider):
     name = "eataly_spider"
     allowed_urls = ['https://www.yelp.com/']
-    # start_urls = [('https://www.yelp.com/search?find_desc=Restaurants&find_loc=San%20Francisco%2C%20CA&sortby=review_count&cflt=italian%2Cpizza%2Cmediterranean&start=0')]
     start_urls = [('https://www.yelp.com/search?find_desc=italian&find_loc=seattle%20wa&ns=1&start=0')]
 
     def parse(self, response):
-    # def parse(self, response):  # ******
     # the parse function is for nagivating through the different pages of yelp reviews for the 300 most review 
     # Italian/Pizza/Mediterranean restaurants within each of the potential cities
 
@@ -60,16 +55,16 @@ class eataly(Spider):
             Rating = response.xpath('//div[@class="lemon--div__373c0__1mboc attribute__373c0__1hPI_ display--inline-block__373c0__1ZKqC margin-r1__373c0__zyKmV border-color--default__373c0__3-ifU"]/span/div/@aria-label').extract()
             Dollar_sign = response.xpath('//div[@class="lemon--div__373c0__1mboc border-color--default__373c0__3-ifU"]/span/span/text()').extract()
             Nbr_reviews = " ".join(response.xpath('//*[@class="lemon--span__373c0__3997G text__373c0__2Kxyz reviewCount__373c0__2r4xT text-color--black-extra-light__373c0__2OyzO text-align--left__373c0__2XGa-"]/text()').extract())
-            # Cuisine = response.xpath('//span[@class="lemon--span__373c0__3997G text__373c0__2Kxyz text-color--black-extra-light__373c0__2OyzO text-align--left__373c0__2XGa-"]/a/text()').extract()
             City = response.xpath('//div[@class="lemon--div__373c0__1mboc border-color--default__373c0__3-ifU overflow--hidden__373c0__2y4YK"]/input/@value').extract()
+            # Cuisine = response.xpath('//span[@class="lemon--span__373c0__3997G text__373c0__2Kxyz text-color--black-extra-light__373c0__2OyzO text-align--left__373c0__2XGa-"]/a/text()').extract()
 
         item = EatalyItem()
 
         item['RestName'] = RestName
         item['Rating'] = Rating
         item['Dollar_sign'] = Dollar_sign
-        # item['Cuisine'] = Cuisine
         item['Nbr_reviews'] = Nbr_reviews
         item['City'] = City
+        # item['Cuisine'] = Cuisine
         
         yield item
